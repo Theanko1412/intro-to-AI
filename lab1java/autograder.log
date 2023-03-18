@@ -1,0 +1,29 @@
+0036527895
+================
+
+=== UNARCHIVE AND STRUCTURE ===
+OK!
+
+=== COMPILE ===
+OK!
+
+=== EVALUATION ===
+
+== BFS ==
+  Passed 6 / 6 tests.
+
+== UCS ==
+  Passed 6 / 6 tests.
+
+== A-STAR ==
+  Passed 7 / 7 tests.
+
+== HEURISTIC-CONSISTENT ==
+  Passed 10 / 10 tests.
+
+== HEURISTIC-OPTIMISTIC ==
+  Passed 10 / 10 tests.
+
+=== TOTAL RESULTS ===
+39 / 39 tests passed. (100.00%)
+
