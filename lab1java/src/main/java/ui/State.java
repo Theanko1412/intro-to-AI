@@ -4,27 +4,27 @@ package ui;
 
 public class State implements Comparable<State> {
     State parentState;
-    String state;
+    String name;
     Double price;
     Double totalPrice;
     Double totalPriceWithHeuristic;
 
-    public State(String state) {
-        this.state = state;
+    public State(String name) {
+        this.name = name;
         this.price = null;
         this.parentState = null;
         this.totalPrice = null;
         this.totalPriceWithHeuristic = null;
     }
-    public State(String state, Double price) {
-        this.state = state;
+    public State(String name, Double price) {
+        this.name = name;
         this.price = price;
         this.parentState = null;
     }
 
 
-    public State(String state, Double price, State parentState) {
-        this.state = state;
+    public State(String name, Double price, State parentState) {
+        this.name = name;
         this.price = price;
         this.parentState = parentState;
     }
@@ -54,12 +54,12 @@ public class State implements Comparable<State> {
         this.parentState = parentState;
     }
 
-    public String getState() {
-        return state;
+    public String getName() {
+        return name;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getPrice() {
@@ -74,7 +74,7 @@ public class State implements Comparable<State> {
     public String toString() {
         return "State{" +
                 "parentState=" + parentState +
-                ", state='" + state + '\'' +
+                ", state='" + name + '\'' +
                 ", price=" + price +
                 ", totalPrice=" + totalPrice +
                 ", totalPriceWithHeuristic=" + totalPriceWithHeuristic +
