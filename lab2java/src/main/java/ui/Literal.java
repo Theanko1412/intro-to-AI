@@ -68,8 +68,7 @@ public class Literal {
 
     //these 2 functions templates are on the internet, my first thought was making static functions inside the main class
     //that will negate the literals and/or find complements(old artifact that is still there that i didn't have time to change
-    //is function negateClause(), so this is not blindly copy-pasted solution and instead just making the code look much cleaner
-    // (the irony... when making 400 lines of 💩 but ⏰ is ticking no time for cleanliness) based on sources i found)
+    //is function negateClause(), so this is not blindly copy-pasted solution
     public boolean isComplementOf(Literal other) {
         return variable.equals(other.getVariable()) && isNegated != other.isNegated();
     }
