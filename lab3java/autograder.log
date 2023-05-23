@@ -1,0 +1,27 @@
+0036527895
+================
+
+=== UNARCHIVE AND STRUCTURE ===
+OK!
+
+=== COMPILE ===
+OK!
+
+=== EVALUATION ===
+
+=== TOTAL RESULTS ===
+15 / 15 tests passed. (100.00%)
+
+== ID3 ==
+  Passed 8 / 8 tests.
+    BRANCHES: 8 / 8
+    PREDICTIONS: 8 / 8
+    ACCURACY: 8 / 8
+    CONFUSION_MATRIX: 8 / 8
+
+== ID3 LIMITED DEPTH ==
+  Passed 7 / 7 tests.
+    BRANCHES: 7 / 7
+    PREDICTIONS: 7 / 7
+    ACCURACY: 7 / 7
+    CONFUSION_MATRIX: 7 / 7
