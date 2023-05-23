@@ -3,18 +3,18 @@ package ui;
 import java.util.List;
 
 public class Node implements TreeNode {
-    public String value;
-    public List<TreeNode> children;
-    public String parentValue;
+  public String value;
+  public List<TreeNode> children;
+  public String parentValue;
 
-    public Node(String value, List<TreeNode> children) {
-        this.value = value;
-        this.children = children;
-    }
+  public Node(String value, List<TreeNode> children) {
+    this.value = value;
+    this.children = children;
+  }
 
-    public String toString() {
-        return "Node(" + "[" + parentValue + "] " + value + ", " + children + ")";
-    }
+  public String toString() {
+    return "Node(" + "[" + parentValue + "] " + value + ", " + children + ")";
+  }
 
   public String getValue() {
     return value;

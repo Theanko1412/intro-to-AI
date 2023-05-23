@@ -1,3 +1,4 @@
 package ui;
 
-public interface TreeNode {}
+public interface TreeNode {
+}

@@ -1,16 +1,16 @@
 package ui;
 
 public class Leaf implements TreeNode {
-    public String value;
-    public String name;
+  public String value;
+  public String name;
 
-    public Leaf(String value) {
-        this.value = value;
-    }
+  public Leaf(String value) {
+    this.value = value;
+  }
 
-    public String toString() {
-        return "Leaf[" + name + "](" + value + ")";
-    }
+  public String toString() {
+    return "Leaf[" + name + "](" + value + ")";
+  }
 
   public String getValue() {
     return value;

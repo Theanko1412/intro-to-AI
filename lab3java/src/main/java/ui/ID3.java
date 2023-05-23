@@ -10,7 +10,8 @@ public class ID3 {
   List<String> initialHeader;
   boolean depthZero = false;
 
-  public ID3() {}
+  public ID3() {
+  }
 
   // based on pseudocode from ppt
   public TreeNode fit(List<List<String>> D, List<List<String>> Dparent, List<String> X, int depth) {
@@ -39,8 +40,7 @@ public class ID3 {
     String v = argmaxv(D);
     // if our header is empty or all our values in D are the same we just return the leaf with most
     // frequent
-    if (X.isEmpty()
-        || D.stream().map(row -> row.get(row.size() - 1)).collect(Collectors.toSet()).size() == 1) {
+    if (X.isEmpty() || D.stream().map(row -> row.get(row.size() - 1)).collect(Collectors.toSet()).size() == 1) {
       return new Leaf(v);
     }
 
@@ -55,24 +55,14 @@ public class ID3 {
     // for each value in column x recursively call fit
     for (String val : values) {
       int indexToCheck = X.indexOf(x);
-      TreeNode t =
-          fit(
-              D.stream()
-                  // taking only rows where column x equals val
-                  .filter(row -> row.get(indexToCheck).equals(val))
-                  // removing the column x, all value will the the same
-                  // https://stackoverflow.com/questions/74525270/remove-column-from-2d-array-in-java
-                  .map(
-                      row ->
-                          IntStream.range(0, row.size())
-                              .filter(i -> i != indexToCheck)
-                              .mapToObj(row::get)
-                              .toList())
-                  .toList(),
-              D,
-              // removing column x from header
-              X.stream().filter(col -> !col.equals(x)).toList(),
-              depth - 1);
+      TreeNode t = fit(D.stream()
+              // taking only rows where column x equals val
+              .filter(row -> row.get(indexToCheck).equals(val))
+              // removing the column x, all value will the the same
+              // https://stackoverflow.com/questions/74525270/remove-column-from-2d-array-in-java
+              .map(row -> IntStream.range(0, row.size()).filter(i -> i != indexToCheck).mapToObj(row::get).toList()).toList(), D,
+          // removing column x from header
+          X.stream().filter(col -> !col.equals(x)).toList(), depth - 1);
       // before appending to subtree we need to apply additional info about node/leaf(what produced
       // it)
       if (t instanceof Leaf leaf) {
@@ -130,19 +120,11 @@ public class ID3 {
           if (treeNode == null) {
             treeNode =
                 // get last column, get most frequent, then get alphabetical
-                new Leaf(
-                    data.stream()
-                        .map(row1 -> row1.get(row1.size() - 1))
-                        // https://stackoverflow.com/questions/25441088/how-can-i-count-occurrences-with-groupby
-                        .collect(Collectors.groupingBy(s -> s, Collectors.counting()))
-                        .entrySet()
-                        // https://stackoverflow.com/questions/54483094/sorting-a-map-on-first-by-value-then-by-key
-                        .stream()
-                        .min(
-                            Map.Entry.<String, Long>comparingByValue()
-                                .thenComparing(Map.Entry.comparingByKey()))
-                        .get()
-                        .getKey());
+                new Leaf(data.stream().map(row1 -> row1.get(row1.size() - 1))
+                    // https://stackoverflow.com/questions/25441088/how-can-i-count-occurrences-with-groupby
+                    .collect(Collectors.groupingBy(s -> s, Collectors.counting())).entrySet()
+                    // https://stackoverflow.com/questions/54483094/sorting-a-map-on-first-by-value-then-by-key
+                    .stream().min(Map.Entry.<String, Long>comparingByValue().thenComparing(Map.Entry.comparingByKey())).get().getKey());
             ((Leaf) treeNode).setName(value);
           }
         }
@@ -190,7 +172,7 @@ public class ID3 {
     //formatting output
     String returnValue = "";
     for (String value : values) {
-      for(String value1 : values){
+      for (String value1 : values) {
         returnValue += matrix.get(value).get(value1) + " ";
       }
       returnValue += "\n";
@@ -220,11 +202,7 @@ public class ID3 {
       }
     }
     //return most common, if multiple get alphabeticaly
-    return counts.entrySet().stream()
-        .sorted(Map.Entry.comparingByKey())
-        .max(Map.Entry.comparingByValue())
-        .get()
-        .getKey();
+    return counts.entrySet().stream().sorted(Map.Entry.comparingByKey()).max(Map.Entry.comparingByValue()).get().getKey();
   }
 
   //choose best feature based on information gain
@@ -252,17 +230,12 @@ public class ID3 {
     int index = X.indexOf(x);
 
     //for each value count appearances
-    HashMap<String, Integer> valueCounts =
-        (HashMap<String, Integer>)
-            D.stream()
-                .collect(
-                    Collectors.groupingBy(row -> row.get(index), Collectors.summingInt(row -> 1)));
+    HashMap<String, Integer> valueCounts = (HashMap<String, Integer>) D.stream().collect(Collectors.groupingBy(row -> row.get(index), Collectors.summingInt(row -> 1)));
 
     for (Map.Entry<String, Integer> entry : valueCounts.entrySet()) {
       String value = entry.getKey();
       //pick only rows with value on position index
-      List<List<String>> subD =
-          D.stream().collect(Collectors.groupingBy(row -> row.get(index))).get(value);
+      List<List<String>> subD = D.stream().collect(Collectors.groupingBy(row -> row.get(index))).get(value);
       //calculate entropy for each value and subtract from total entropy
       entropy -= (double) entry.getValue() / D.size() * calculateEntropy(subD);
     }
@@ -272,12 +245,7 @@ public class ID3 {
 
   private double calculateEntropy(List<List<String>> D) {
     //count final accuracies
-    HashMap<String, Integer> endValues =
-        (HashMap<String, Integer>)
-            D.stream()
-                .collect(
-                    Collectors.groupingBy(
-                        row -> row.get(row.size() - 1), Collectors.summingInt(row -> 1)));
+    HashMap<String, Integer> endValues = (HashMap<String, Integer>) D.stream().collect(Collectors.groupingBy(row -> row.get(row.size() - 1), Collectors.summingInt(row -> 1)));
 
     double entropy = 0.0;
 
