@@ -3,13 +3,21 @@ package ui;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Solution {
@@ -40,12 +48,65 @@ public class Solution {
     parseInputParams(args);
 
     NeuralNetwork n = geneticAlgorithm();
+    NeuralNetwork notTrained = new NeuralNetwork(trainDataHeader.size(), parseNNInput(nn));
+
 
     List<Double> output = new ArrayList<>();
+    List<Double> outputNotTrained = new ArrayList<>();
     for (List<Object> each : testData) {
       output.add(n.calculate(each.stream().mapToDouble(o -> (double) o).toArray()));
+      outputNotTrained.add(notTrained.calculate(each.stream().mapToDouble(o -> (double) o).toArray()));
     }
+
+
+    if(trainFile.contains("sine")) {
+      plotSine(output, outputNotTrained);
+    }
+
     System.out.println("[Test error]: " + n.calculateError(output.stream().mapToDouble(o -> o).toArray(), testDataTargetValues.stream().mapToDouble(Double::doubleValue).toArray()));
+  }
+
+  private static void plotSine(List<Double> output, List<Double> outputNotTrained) {
+    XYSeries series1 = new XYSeries("Actual");
+    XYSeries series2 = new XYSeries("Predicted");
+//    XYSeries series3 = new XYSeries("Not trained");
+
+    for(int i = 0; i < testData.size(); i++) {
+      series1.add((Double) testData.get(i).get(0), testDataTargetValues.get(i));
+      series2.add((Double) testData.get(i).get(0), output.get(i));
+//      series3.add((Double) testData.get(i).get(0), outputNotTrained.get(i));
+    }
+
+    XYSeriesCollection dataset = new XYSeriesCollection();
+    dataset.addSeries(series1);
+    dataset.addSeries(series2);
+//    dataset.addSeries(series3);
+
+    JFreeChart chart = ChartFactory.createXYLineChart(
+        "Sine aprox", // chart title
+        "X",     // x axis label
+        "Y",     // y axis label
+        dataset, // data
+        PlotOrientation.VERTICAL,
+        true,    // include legend
+        true,    // tooltips
+        false    // urls
+    );
+
+// Optionally, you can customize the appearance of your chart
+    XYPlot plot = chart.getXYPlot();
+    XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+    renderer.setSeriesPaint(0, Color.RED);
+    renderer.setSeriesPaint(1, Color.BLUE);
+    renderer.setSeriesPaint(2, Color.GREEN);
+    plot.setRenderer(renderer);
+
+// Display the chart using a ChartPanel
+    ChartPanel panel = new ChartPanel(chart);
+    JFrame frame = new JFrame();
+    frame.setContentPane(panel);
+    frame.pack();
+    frame.setVisible(true);
   }
 
   private static void parseInputParams(String... args) {

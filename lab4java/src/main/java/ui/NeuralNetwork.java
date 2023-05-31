@@ -10,6 +10,8 @@ public class NeuralNetwork {
   public int[] hiddenLayers;
   public double error = 0;
 
+  //neural network structure idea from Finn Eggers on youtube, neural networks tutorial: Fully Connected 2 - Basic structure
+  //didnt know how to implement it solo so i used his idea
   private double[][] neuronOutput;  //layer x neuron
   private double[][][] neuronWeights;   //layer x neuron x previous layer neuron
   private double[][] neuronBias;    //layer x neuron
@@ -43,9 +45,9 @@ public class NeuralNetwork {
         this.neuronWeights[layerIndex][neuronIndex] = new double[layerIndex == 0 ? inputSize : this.hiddenLayers[layerIndex - 1]];
         for (int weightIndex = 0; weightIndex < this.neuronWeights[layerIndex][neuronIndex].length; weightIndex++) {
           // normal distribution with standard deviation of 0.01
-          this.neuronWeights[layerIndex][neuronIndex][weightIndex] = rand.nextGaussian() * 0.01;
+          this.neuronWeights[layerIndex][neuronIndex][weightIndex] = rand.nextGaussian() /** 0.01*/;
         }
-        this.neuronBias[layerIndex][neuronIndex] = rand.nextGaussian() * 0.01;
+        this.neuronBias[layerIndex][neuronIndex] = rand.nextGaussian() /** 0.01*/;
       }
     }
   }
@@ -110,6 +112,35 @@ public class NeuralNetwork {
   private double sigmoid(double sum) {
     return 1 / (1 + Math.exp(-sum));
   }
+
+  private double relu(double x) {
+    return Math.max(0, x);
+  }
+
+  private double tanh(double x) {
+    return Math.tanh(x);
+  }
+
+  private double leakyReLU(double x) {
+    return Math.max(0.01*x, x);
+  }
+
+  private double[] softmax(double[] x) {
+    double[] softmax = new double[x.length];
+
+    double sum = 0.0;
+    for (int i = 0; i < x.length; i++) {
+      softmax[i] = Math.exp(x[i]);
+      sum += softmax[i];
+    }
+
+    for (int i = 0; i < x.length; i++) {
+      softmax[i] = softmax[i] / sum;
+    }
+
+    return softmax;
+  }
+
 
   public double[][][] getNeuronWeights() {
     return neuronWeights;
