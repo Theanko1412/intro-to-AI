@@ -10,8 +10,6 @@ public class NeuralNetwork {
   public int[] hiddenLayers;
   public double error = 0;
 
-  //neural network structure idea from Finn Eggers on youtube, neural networks tutorial: Fully Connected 2 - Basic structure
-  //didnt know how to implement it solo so i used his idea
   private double[][] neuronOutput;  //layer x neuron
   private double[][][] neuronWeights;   //layer x neuron x previous layer neuron
   private double[][] neuronBias;    //layer x neuron
